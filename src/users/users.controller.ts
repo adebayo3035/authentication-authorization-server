@@ -24,7 +24,10 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post('register')
-  async register(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async register(
+    @Body() createUserDto: CreateUserDto,
+    @Res() res: Response,
+  ): Promise<User> {
     // ... (rest of the code remains the same)
     const existingUsername = await this.usersService.findByUsername(
       createUserDto.username,
@@ -43,7 +46,9 @@ export class UsersController {
 
     const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
     createUserDto.password = hashedPassword;
-
+    res
+      .status(HttpStatus.OK)
+      .json({ message: 'User Account has been successfully Created' });
     return this.usersService.create(createUserDto);
   }
 

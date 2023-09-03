@@ -1,17 +1,24 @@
 /* eslint-disable prettier/prettier */
-import { IsNotEmpty, IsEmail, IsDateString } from 'class-validator';
+import { IsNotEmpty, IsEmail, IsDateString, IsString, Length, IsEnum } from 'class-validator';
+import { Gender } from 'src/enums/gender.enum';
 
 export class CreateUserDto {
   @IsNotEmpty()
+  @IsString()
+  @Length(8, 20)
   username: string;
 
   @IsNotEmpty()
+  @IsString()
   firstName: string;
 
   @IsNotEmpty()
+  @IsString()
   lastName: string;
 
   @IsNotEmpty()
+  @IsString()
+  @Length(11,11, { message: 'phoneNumber must be exactly 11 characters' }) // Custom error message)
   phoneNumber: string;
 
   @IsNotEmpty()
@@ -19,6 +26,8 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
+  @IsString()
+  @Length(6, 20) //Minimum length of 6 and maximum length of 20 characters
   password: string;
 
   @IsNotEmpty()
@@ -26,7 +35,8 @@ export class CreateUserDto {
   dateOfBirth: Date;
 
   @IsNotEmpty()
-  gender: string;
+  @IsEnum(Gender)
+  gender: Gender;
 
 
 }
